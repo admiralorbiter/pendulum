@@ -194,20 +194,21 @@ Two separate measures are required:
 
 ### 4.1 Backlash Equation (Distributed-Lag Fixed Effects)
 
-$$\text{Backlash}_{s,t} = \alpha_s + \delta_t + \beta_1 \text{PolicyIntensity}_{s,t-1} + \beta_2 \text{PolicyIntensity}_{s,t-2} + \beta_3 \text{AchievementSignal}_{s,t-1} + \beta_4 X_{s,t} + \varepsilon_{s,t}$$
+$$\text{Backlash}_{s,t} = \alpha_s + \delta_t + \sum_{k=1}^3 \beta_k (\text{PolicyIntensity}_{s,t-k} - \text{Norm}_{s,t-k}) + \beta_4 \text{AchievementSignal}_{s,t-1} + \beta_5 X_{s,t} + \varepsilon_{s,t}$$
 
 - $\alpha_s$: state fixed effects (absorb time-invariant state characteristics)
 - $\delta_t$: year fixed effects (absorb national trends)
-- $\beta_1, \beta_2 > 0$: policy intensity predicts backlash with lag
-- $X_{s,t}$: control vector (partisanship, demographics, poverty, union strength)
+- $\text{Norm}_{s,t-k}$: 5-year rolling average representing public's adaptive norm baseline
+- $\beta_1, \beta_2, \beta_3 > 0$: policy deviation from the norm predicts backlash with lag
+- $X_{s,t}$: control vector (partisan government trifectas, election years, demographics, union strength)
 
-**Predicted sign:** $\hat{\beta}_1 > 0$ — more policy intensity predicts more backlash one year later.
+**Predicted sign:** $\sum \hat{\beta}_k > 0$ — policy exceeding the baseline norm predicts more backlash over subsequent periods.
 
 **Run separately on each backlash sub-indicator before combining.**
 
 ### 4.2 Correction Equation
 
-$$\text{Correction}_{s,t+1} = \alpha_s + \delta_t + \gamma_1 \text{Backlash}_{s,t} + \gamma_2 \text{PolicyIntensity}_{s,t-1} + \gamma_3 X_{s,t} + u_{s,t}$$
+$$\text{Correction}_{s,t+1} = \alpha_s + \delta_t + \gamma_1 \text{Backlash}_{s,t} + \gamma_2 (\text{PolicyIntensity}_{s,t-1} - \text{Norm}_{s,t-1}) + \gamma_3 X_{s,t} + u_{s,t}$$
 
 **Predicted sign:** $\hat{\gamma}_1 > 0$ — more backlash predicts more policy correction.
 
@@ -222,6 +223,16 @@ $$\mathbf{Y}_{s,t} = \sum_{p=1}^{P} \mathbf{A}_p \mathbf{Y}_{s,t-p} + \mathbf{u}
 
 Where $\mathbf{Y}_{s,t} = [\text{PolicyIntensity}, \text{Backlash}, \text{Correction}]^\top$.
 
+**VAR Identification Scheme (Cholesky Ordering):**
+For Impulse-Response Functions (IRFs), we impose the recursive Cholesky ordering:
+\[
+\text{PolicyIntensity}_{s,t} \rightarrow \text{Backlash}_{s,t} \rightarrow \text{Correction}_{s,t}
+\]
+*Justification:*
+1. Policy intensity is highly predetermined (sticky institutional rules).
+2. Backlash responds contemporaneously to policy changes, but policy only responds to backlash with a lag.
+3. Policy correction is the most endogenous, responding contemporaneously to both policy and backlash shocks.
+
 **Why VAR is preferable to sequential regression:**
 - Does not impose a causal ordering (both equations are endogenous)
 - Allows bidirectional effects
@@ -234,9 +245,9 @@ Where $\mathbf{Y}_{s,t} = [\text{PolicyIntensity}, \text{Backlash}, \text{Correc
 - Does Correction Granger-cause lower subsequent PolicyIntensity? ($p < 0.05$ → confirms full cycle)
 - Impulse-response function: does the system oscillate in response to a policy intensity shock, or converge monotonically?
 
-**Lag order selection:** AIC/BIC; typically 1–3 lags for annual data.
+**Lag order selection:** AIC/BIC; baseline is VAR(1) to avoid parameter bloat in a T=14 panel.
 
-**Implementation:** `linearmodels` or `statsmodels` VARResultsWrapper in Python.
+**Implementation:** statsmodels VARResultsWrapper in Python (estimating on pooled demeaned panel) or a panel VAR R-bridge (for the Abrigo-Love estimator).
 
 ---
 
