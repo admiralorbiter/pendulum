@@ -1,8 +1,8 @@
-# Data files - can be large
-data/raw/*
-data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
+# Data files - allow CSVs, ignore large archives
+data/raw/*.zip
+data/raw/*.gz
+data/processed/*.zip
+data/processed/*.gz
 
 # Python
 __pycache__/
@@ -31,7 +31,10 @@ Thumbs.db
 .env
 *.env
 secrets.yaml
+gdelt-scraper-*.json
 
 # Large output files
 *.csv.gz
 *.parquet
+
+gdelt-scraper-500401-964e41ee2b07.json

@@ -17,6 +17,8 @@ mesa>=2.1              # Agent-based modeling framework
 
 # Data collection
 pytrends>=4.9          # Google Trends API
+google-cloud-bigquery  # Google Cloud BigQuery client library
+db-dtypes>=1.1.0       # Required for converting BigQuery results to Pandas DataFrames
 requests>=2.31
 beautifulsoup4>=4.12
 
