@@ -201,18 +201,18 @@ This gives the micro-mechanism for cascade dynamics: once enough people join, mo
 ### 5.2 The Equations
 
 **Public Demand:**
-$$D_{t+1} = D_t - \alpha(P_t - N_t) + \beta A_t - \gamma B_t + \varepsilon_t$$
+$$D_{t+1} = D_t - \alpha(P_t - N_t) + \beta A_t - \gamma B_t \cdot \text{sign}(P_t - N_t) + \varepsilon_t$$
 
-*Plain language:* Public demand shifts against policy when policy is perceived as too far from the norm ($\alpha$ term). Attention amplifies demand movement ($\beta$ term). Backlash pressure pulls demand further from policy ($\gamma$ term). $\varepsilon_t$ is noise.
+*Plain language:* Public demand shifts against policy when policy is perceived as too far from the norm ($\alpha$ term). Attention amplifies demand movement ($\beta$ term). Backlash pressure pulls demand *away* from policy (opposing the policy direction, hence signed by the policy-norm gap; $\gamma$ term). $\varepsilon_t$ is noise.
 
 *Equilibrium:* $D^* = N^*$ when $P = N$ and $A = B = 0$.
 
 ---
 
 **Policy Position:**
-$$P_{t+1} = P_t + \lambda(D_{t-k} - P_t) + \mu A_t + \eta_t$$
+$$P_{t+1} = P_t + (\lambda + \mu A_t)(D_{t-k} - P_t) + \eta_t$$
 
-*Plain language:* Policy adjusts toward public demand, but with a lag of $k$ periods. Attention also accelerates policy response directly ($\mu$ term — when an issue is salient, legislators respond faster). $\eta_t$ is noise.
+*Plain language:* Policy adjusts toward public demand, but with a lag of $k$ periods. Attention scales the responsiveness speed ($\mu$ term — when an issue is salient, legislators respond faster), removing artificial positive policy drift. $\eta_t$ is noise.
 
 *The delay $k$ is the engine of oscillation.* When $k = 0$, the system can converge. When $k$ is large, the correction arrives after demand has already shifted further, producing overshoot.
 

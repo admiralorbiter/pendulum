@@ -64,8 +64,8 @@ pendulum/
 
 Public demand ($D_t$) adjusts against policy ($P_t$) when policy is perceived as too far from a norm ($N_t$) — but policy responds to demand with a lag ($k$). Attention ($A_t$) amplifies both correction and backlash ($B_t$), but decays over time (Downs's issue-attention cycle). Backlash mobilizes nonlinearly: it accelerates only after policy crosses a perceived threshold. When these four forces interact with delayed feedback, the result is not random swinging but **patterned oscillation** — the amplitude and frequency determined by the delay, the correction strength, the backlash threshold, and the institutional damping built into the system.
 
-$$D_{t+1} = D_t - \alpha(P_t - N_t) + \beta A_t - \gamma B_t + \varepsilon_t$$
-$$P_{t+1} = P_t + \lambda(D_{t-k} - P_t) + \mu A_t + \eta_t$$
+$$D_{t+1} = D_t - \alpha(P_t - N_t) + \beta A_t - \gamma B_t \cdot \text{sign}(P_t - N_t) + \varepsilon_t$$
+$$P_{t+1} = P_t + (\lambda + \mu A_t)(D_{t-k} - P_t) + \eta_t$$
 $$A_{t+1} = (1-\delta)A_t + \varphi|P_t - N_t| + \text{shock}_t$$
 $$B_{t+1} = \rho B_t + \sigma \max(0, |P_t - N_t| - \theta)$$
 $$N_{t+1} = N_t + \nu(P_t - N_t) + \eta_N$$

@@ -89,8 +89,9 @@ class PendulumSimulation:
             e_B = np.random.normal(0, self.noise_std) if self.noise_std > 0 else 0.0
             e_N = np.random.normal(0, self.noise_std) if self.noise_std > 0 else 0.0
             
-            # 1. Demand transition (D_t+1)
-            D_next = D[-1] - self.alpha * (P[-1] - N[-1]) + self.beta * A[-1] - self.gamma * B[-1] + e_D
+            # 1. Demand transition (D_t+1) - corrected signed backlash force
+            policy_gap = P[-1] - N[-1]
+            D_next = D[-1] - self.alpha * policy_gap + self.beta * A[-1] - self.gamma * B[-1] * np.sign(policy_gap) + e_D
             
             # 2. Policy transition (P_t+1) with delay lag tau
             # Retrieve delayed demand: if t - tau < 0, use initial D[0]
@@ -98,7 +99,8 @@ class PendulumSimulation:
             D_lagged = D[lagged_idx]
             
             if A[-1] >= self.theta_inst:
-                P_next = P[-1] + self.lambda_ * (D_lagged - P[-1]) + self.mu * A[-1] + e_P
+                # Corrected attention scaling (salience accelerates responsiveness speed, no positive drift)
+                P_next = P[-1] + (self.lambda_ + self.mu * A[-1]) * (D_lagged - P[-1]) + e_P
             else:
                 P_next = P[-1] + e_P
                 
