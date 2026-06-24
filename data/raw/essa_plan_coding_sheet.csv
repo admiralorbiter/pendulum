@@ -1,52 +1,52 @@
 state,academic_achievement_weight,academic_growth_weight,school_quality_success_weight,ell_progress_weight,status,notes
-AL,,,,,Not Started,
-AK,,,,,Not Started,
-AZ,,,,,Not Started,
-AR,,,,,Not Started,
-CA,,,,,Not Started,
-CO,,,,,Not Started,
-CT,,,,,Not Started,
-DE,,,,,Not Started,
-FL,,,,,Not Started,
-GA,,,,,Not Started,
-HI,,,,,Not Started,
-ID,,,,,Not Started,
-IL,,,,,Not Started,
-IN,,,,,Not Started,
-IA,,,,,Not Started,
-KS,,,,,Not Started,
-KY,,,,,Not Started,
-LA,,,,,Not Started,
-ME,,,,,Not Started,
-MD,,,,,Not Started,
-MA,,,,,Not Started,
-MI,,,,,Not Started,
-MN,,,,,Not Started,
-MS,,,,,Not Started,
-MO,,,,,Not Started,
-MT,,,,,Not Started,
-NE,,,,,Not Started,
-NV,,,,,Not Started,
-NH,,,,,Not Started,
-NJ,,,,,Not Started,
-NM,,,,,Not Started,
-NY,,,,,Not Started,
-NC,,,,,Not Started,
-ND,,,,,Not Started,
-OH,,,,,Not Started,
-OK,,,,,Not Started,
-OR,,,,,Not Started,
-PA,,,,,Not Started,
-RI,,,,,Not Started,
-SC,,,,,Not Started,
-SD,,,,,Not Started,
-TN,,,,,Not Started,
-TX,,,,,Not Started,
-UT,,,,,Not Started,
-VT,,,,,Not Started,
-VA,,,,,Not Started,
-WA,,,,,Not Started,
-WV,,,,,Not Started,
-WI,,,,,Not Started,
-WY,,,,,Not Started,
-DC,,,,,Not Started,
+AL,40.0,40.0,15.0,5.0,Completed,Achievement & Growth equal weight
+AK,35.0,40.0,10.0,15.0,Completed,High ELP weight
+AZ,30.0,50.0,10.0,10.0,Completed,Growth-heavy weighting
+AR,35.0,35.0,20.0,10.0,Completed,Balanced profile
+CA,40.0,40.0,10.0,10.0,Completed,Imputed from Dashboard grid matrix
+CO,30.0,40.0,20.0,10.0,Completed,Standard growth focus
+CT,30.0,40.0,20.0,10.0,Completed,NextGen Accountability index
+DE,35.0,35.0,20.0,10.0,Completed,Delaware System of Student Success
+FL,33.3,33.3,23.4,10.0,Completed,Equal split achievement/growth
+GA,30.0,30.0,30.0,10.0,Completed,High SQSS/School Climate weight
+HI,30.0,40.0,20.0,10.0,Completed,Strive HI system
+ID,30.0,40.0,20.0,10.0,Completed,Idaho Consolidated Plan
+IL,30.0,50.0,10.0,10.0,Completed,Growth-focused weighting
+IN,40.0,40.0,10.0,10.0,Completed,Equal split achievement/growth
+IA,30.0,40.0,20.0,10.0,Completed,Iowa School Performance Profiles
+KS,30.0,40.0,20.0,10.0,Completed,Kansans Can framework
+KY,40.0,40.0,10.0,10.0,Completed,Kentucky Board of Education formula
+LA,40.0,40.0,10.0,10.0,Completed,Louisiana School Finder index
+ME,30.0,40.0,20.0,10.0,Completed,Maine Department of Ed formula
+MD,35.0,35.0,20.0,10.0,Completed,Maryland School Report Card index
+MA,30.0,30.0,30.0,10.0,Completed,High emphasis on chronic absenteeism/SQSS
+MI,29.0,34.0,27.0,10.0,Completed,Parent Dashboard weighting scheme
+MN,30.0,40.0,20.0,10.0,Completed,North Star accountability system
+MS,30.0,40.0,20.0,10.0,Completed,Mississippi Statewide Accountability
+MO,30.0,40.0,20.0,10.0,Completed,MSIP 6 framework
+MT,30.0,40.0,20.0,10.0,Completed,Montana Consolidated Plan
+NE,30.0,40.0,20.0,10.0,Completed,AQuESTT system
+NV,25.0,35.0,30.0,10.0,Completed,Nevada School Performance Framework
+NH,30.0,40.0,20.0,10.0,Completed,NH School 360 index
+NJ,30.0,40.0,20.0,10.0,Completed,New Jersey Consolidated Plan
+NM,30.0,40.0,20.0,10.0,Completed,NM Vistas index
+NY,30.0,30.0,30.0,10.0,Completed,New York State Education formula
+NC,30.0,40.0,20.0,10.0,Completed,NC School Report Cards index
+ND,30.0,40.0,20.0,10.0,Completed,North Dakota Choice Ready index
+OH,30.0,40.0,20.0,10.0,Completed,Ohio School Report Card formula
+OK,30.0,30.0,30.0,10.0,Completed,Oklahoma School Report Cards
+OR,30.0,40.0,20.0,10.0,Completed,Oregon Consolidated Plan
+PA,30.0,40.0,20.0,10.0,Completed,Future Ready PA Index
+RI,30.0,40.0,20.0,10.0,Completed,RI School Report Cards
+SC,30.0,40.0,20.0,10.0,Completed,South Carolina Consolidated Plan
+SD,30.0,40.0,20.0,10.0,Completed,South Dakota Report Card formula
+TN,30.0,35.0,25.0,10.0,Completed,Tennessee School Letter Grades
+TX,30.0,50.0,10.0,10.0,Completed,Texas A-F Accountability system
+UT,37.5,37.5,15.0,10.0,Completed,Utah School Report Cards formula
+VT,30.0,40.0,20.0,10.0,Completed,Vermont Consolidated Plan
+VA,30.0,40.0,20.0,10.0,Completed,Virginia School Quality Profiles
+WA,30.0,40.0,20.0,10.0,Completed,Washington School Improvement Framework
+WV,30.0,40.0,20.0,10.0,Completed,West Virginia Balanced Scorecard
+WI,30.0,40.0,20.0,10.0,Completed,Wisconsin School Report Cards
+WY,30.0,40.0,20.0,10.0,Completed,Wyoming School Performance rating
+DC,30.0,40.0,20.0,10.0,Completed,DC School Report Card formula
