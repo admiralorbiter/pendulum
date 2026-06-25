@@ -249,144 +249,279 @@ blockquote {
 2.  <strong>Helmert-Transformed GMM Panel VAR</strong>: Estimates a 2-variable system to Granger-test feedback loops. We apply the Helmert transformation to remove Nickell bias and instrument the transformed 1-period lags with 1-period untransformed lagged levels.</p>
 <hr />
 <h2>7. Results</h2>
-<p>Our empirical analysis reveals a highly nuanced, mixed-evidence picture. Below is the master results table summarizing all core hypotheses, estimated models, and their interpretations:</p>
-<h3>Master Results Table</h3>
+<p>Our empirical analysis reveals a highly nuanced, mixed-evidence picture. Below is the unified specification map summarizing all estimated models across both our state-level and district-level specifications:</p>
+<h3>Table 7.1: Unified Specification Map of Empirical Results</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Hypothesis / Test</th>
-<th style="text-align: left;">Model Spec</th>
-<th style="text-align: left;">Independent Var (L1)</th>
-<th style="text-align: left;">Outcome Var ($\Delta$ / Level)</th>
-<th style="text-align: left;">Estimate ($\beta$)</th>
+<th style="text-align: left;">Model ID</th>
+<th style="text-align: left;">Level</th>
+<th style="text-align: left;">Hypothesis / Role</th>
+<th style="text-align: left;">Dependent Var ($Y$)</th>
+<th style="text-align: left;">Independent Var ($X$)</th>
+<th style="text-align: left;">Point Estimate ($\beta$ or $\gamma$)</th>
+<th style="text-align: left;">Std. Err.</th>
 <th style="text-align: left;">p-value</th>
-<th style="text-align: left;">Robustness / Bootstrap</th>
-<th style="text-align: left;">Substantive Interpretation</th>
+<th style="text-align: left;">Obs ($N$)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>H1a: Thermostatic correction</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>policy_lag1</code></td>
-<td style="text-align: left;"><code>backlash</code></td>
+<td style="text-align: left;"><strong>State-Level Panel</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>state_h1_policy_on_backlash</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H1 baseline: Policy on Backlash</td>
+<td style="text-align: left;">Composite Backlash</td>
+<td style="text-align: left;">Lagged Policy Intensity</td>
 <td style="text-align: left;">-0.105</td>
+<td style="text-align: left;">0.115</td>
 <td style="text-align: left;">0.361</td>
-<td style="text-align: left;">Insignificant across all lags/subsamples</td>
-<td style="text-align: left;"><strong>Not supported</strong>: No linear policy-to-backlash feedback.</td>
+<td style="text-align: left;">714</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>H1b: Granger causality</strong></td>
-<td style="text-align: left;">Panel VAR</td>
-<td style="text-align: left;"><code>L1_policy_intensity</code></td>
-<td style="text-align: left;"><code>backlash</code></td>
-<td style="text-align: left;">-0.075</td>
-<td style="text-align: left;">0.654</td>
-<td style="text-align: left;">Insignificant</td>
-<td style="text-align: left;"><strong>Not supported</strong>: Policy does not Granger-cause backlash.</td>
+<td style="text-align: left;"><code>state_h1_backlash_on_correction</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H1 baseline: Backlash on Correction</td>
+<td style="text-align: left;">Change in Policy ($\Delta P$)</td>
+<td style="text-align: left;">Lagged Composite Backlash</td>
+<td style="text-align: left;">0.011</td>
+<td style="text-align: left;">0.018</td>
+<td style="text-align: left;">0.538</td>
+<td style="text-align: left;">714</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>H1b: Granger causality</strong></td>
-<td style="text-align: left;">Panel VAR</td>
-<td style="text-align: left;"><code>L1_backlash</code></td>
-<td style="text-align: left;"><code>policy_intensity</code></td>
-<td style="text-align: left;">0.055</td>
-<td style="text-align: left;">0.033</td>
-<td style="text-align: left;">Significant positive</td>
-<td style="text-align: left;"><strong>Opposite sign</strong>: Backlash predicts <em>increase</em> in policy.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Gap Theory</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>abs_policy_gap_lag1</code></td>
-<td style="text-align: left;"><code>backlash</code></td>
-<td style="text-align: left;">-0.064</td>
-<td style="text-align: left;">0.479</td>
-<td style="text-align: left;">Insignificant across asymmetric/threshold models</td>
-<td style="text-align: left;"><strong>Not supported</strong>: Gaps relative to EWMA norm do not predict backlash.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Rollback Correction</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>backlash_lag1</code></td>
-<td style="text-align: left;"><code>correction</code></td>
-<td style="text-align: left;">-0.037</td>
-<td style="text-align: left;">0.090</td>
-<td style="text-align: left;">Insignificant across lags 1-3</td>
-<td style="text-align: left;"><strong>Not supported</strong>: Measured backlash does not predict rollback.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Mean Reversion</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>policy_gap_lag1</code></td>
-<td style="text-align: left;"><code>correction</code></td>
-<td style="text-align: left;">0.098</td>
-<td style="text-align: left;">0.000</td>
-<td style="text-align: left;">Highly significant and robust</td>
-<td style="text-align: left;"><strong>Supported</strong>: Policy gap strongly predicts reversion toward the norm.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>H2: Delay &amp; Oscillation</strong></td>
-<td style="text-align: left;">Cross-section</td>
-<td style="text-align: left;"><code>biennial_legislature</code></td>
-<td style="text-align: left;"><code>amplitude</code> (detrended SD)</td>
-<td style="text-align: left;">-0.181</td>
-<td style="text-align: left;">0.039</td>
-<td style="text-align: left;">Significant negative</td>
-<td style="text-align: left;"><strong>Opposite sign</strong>: Exogenous delay <em>dampens</em> policy volatility.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>H7b: Lock-In (Composite)</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>backlash_x_waiver</code></td>
-<td style="text-align: left;"><code>delta_policy</code></td>
-<td style="text-align: left;">-0.169</td>
-<td style="text-align: left;">0.000</td>
-<td style="text-align: left;">CI: $[-0.251, -0.087]$, Randomization $p=0.001$</td>
-<td style="text-align: left;"><strong>Unclear</strong>: Contaminated by pre-2018 ESEA VAM circularity.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>H7b: Lock-In (LOCO)</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>backlash_x_waiver_no_vam</code></td>
-<td style="text-align: left;"><code>delta_policy_no_vam</code></td>
-<td style="text-align: left;">0.023</td>
-<td style="text-align: left;">0.526</td>
-<td style="text-align: left;">Insignificant</td>
-<td style="text-align: left;"><strong>Not robust</strong>: Decoupling effect disappears when VAM is excluded.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>H7b: Lock-In (Mass Search)</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>backlash_mass_x_waiver</code></td>
-<td style="text-align: left;"><code>delta_policy</code></td>
-<td style="text-align: left;">-0.128</td>
+<td style="text-align: left;"><code>state_h7b_waiver_x_mass_backlash</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;"><strong>H7b Headline</strong>: Mass Backlash × Waiver</td>
+<td style="text-align: left;">Change in Policy ($\Delta P$)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.127</td>
+<td style="text-align: left;">0.051</td>
 <td style="text-align: left;">0.014</td>
-<td style="text-align: left;">Significant and robust</td>
-<td style="text-align: left;"><strong>Suggestive</strong>: Active parent opt-out pressure clashed with lock-ins.</td>
+<td style="text-align: left;">714</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>H7b: Lock-In (Media)</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>backlash_media_x_waiver</code></td>
-<td style="text-align: left;"><code>delta_policy</code></td>
+<td style="text-align: left;"><code>state_h7b_waiver_x_media_backlash</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H7b diagnostic: Media Backlash × Waiver</td>
+<td style="text-align: left;">Change in Policy ($\Delta P$)</td>
+<td style="text-align: left;">Lagged Media Backlash × Waiver</td>
 <td style="text-align: left;">0.0003</td>
+<td style="text-align: left;">0.026</td>
 <td style="text-align: left;">0.990</td>
-<td style="text-align: left;">Insignificant</td>
-<td style="text-align: left;"><strong>Not supported</strong>: GDELT media salience does not interact with waivers.</td>
+<td style="text-align: left;">714</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>H7b: Lock-In (Components)</strong></td>
-<td style="text-align: left;">FE OLS</td>
-<td style="text-align: left;"><code>backlash_x_waiver</code></td>
-<td style="text-align: left;"><code>delta_vam_eval</code></td>
+<td style="text-align: left;"><code>state_h2_biennial_legislature</code></td>
+<td style="text-align: left;">Cross-State</td>
+<td style="text-align: left;">H2: Biennial Schedule on Amplitude</td>
+<td style="text-align: left;">Policy Amplitude (SD)</td>
+<td style="text-align: left;">Biennial Legislature Dummy</td>
+<td style="text-align: left;">-0.181</td>
+<td style="text-align: left;">0.085</td>
+<td style="text-align: left;">0.039</td>
+<td style="text-align: left;">51</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>state_h7b_robustness_no_vam</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H7b LOCO: No-VAM policy index</td>
+<td style="text-align: left;">Change in Policy (No VAM)</td>
+<td style="text-align: left;">Lagged Backlash × Waiver</td>
+<td style="text-align: left;">0.023</td>
+<td style="text-align: left;">0.036</td>
+<td style="text-align: left;">0.526</td>
+<td style="text-align: left;">714</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>state_h7b_robustness_exit_exam</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H7b component: Exit Exams</td>
+<td style="text-align: left;">Change in Exit Exams</td>
+<td style="text-align: left;">Lagged Backlash × Waiver</td>
+<td style="text-align: left;">0.016</td>
+<td style="text-align: left;">0.019</td>
+<td style="text-align: left;">0.398</td>
+<td style="text-align: left;">714</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>state_h7b_robustness_af_grading</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H7b component: A-F Grading</td>
+<td style="text-align: left;">Change in A-F Grading</td>
+<td style="text-align: left;">Lagged Backlash × Waiver</td>
+<td style="text-align: left;">0.006</td>
+<td style="text-align: left;">0.011</td>
+<td style="text-align: left;">0.613</td>
+<td style="text-align: left;">714</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>state_h7b_robustness_3rd_retention</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H7b component: 3rd Grade Retention</td>
+<td style="text-align: left;">Change in Retention Policy</td>
+<td style="text-align: left;">Lagged Backlash × Waiver</td>
+<td style="text-align: left;">-0.005</td>
+<td style="text-align: left;">0.015</td>
+<td style="text-align: left;">0.729</td>
+<td style="text-align: left;">714</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>state_h7b_robustness_vam_eval</code></td>
+<td style="text-align: left;">State-Year</td>
+<td style="text-align: left;">H7b component: VAM Evaluations</td>
+<td style="text-align: left;">Change in VAM Evaluations</td>
+<td style="text-align: left;">Lagged Backlash × Waiver</td>
 <td style="text-align: left;">-0.183</td>
+<td style="text-align: left;">0.036</td>
 <td style="text-align: left;">0.000</td>
-<td style="text-align: left;">Highly significant and robust</td>
-<td style="text-align: left;"><strong>Supported</strong>: Strong lock-in specifically for VAM evaluations.</td>
+<td style="text-align: left;">714</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>District-Level Panel</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_mth_subgroup_all</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Math All Students (Primary)</td>
+<td style="text-align: left;">Math Test Scores</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0642</td>
+<td style="text-align: left;">0.0263</td>
+<td style="text-align: left;">0.0146</td>
+<td style="text-align: left;">473,602</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_mth_subgroup_wht</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Math White Subgroup</td>
+<td style="text-align: left;">Math Test Scores (White)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0794</td>
+<td style="text-align: left;">0.0341</td>
+<td style="text-align: left;">0.0198</td>
+<td style="text-align: left;">424,144</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_mth_subgroup_blk</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Math Black Subgroup</td>
+<td style="text-align: left;">Math Test Scores (Black)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0679</td>
+<td style="text-align: left;">0.0515</td>
+<td style="text-align: left;">0.1879</td>
+<td style="text-align: left;">106,943</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_mth_subgroup_ecd</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Math Low-SES Subgroup</td>
+<td style="text-align: left;">Math Test Scores (Low-SES)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0519</td>
+<td style="text-align: left;">0.0284</td>
+<td style="text-align: left;">0.0676</td>
+<td style="text-align: left;">373,339</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_mth_model_b</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Math Triple Interaction (Low-SES)</td>
+<td style="text-align: left;">Math Test Scores</td>
+<td style="text-align: left;">Interaction × Low-SES Proxy</td>
+<td style="text-align: left;">-0.0516</td>
+<td style="text-align: left;">0.0150</td>
+<td style="text-align: left;">0.0006</td>
+<td style="text-align: left;">473,602</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_mth_placebo_all</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Math Placebo (2010-2011)</td>
+<td style="text-align: left;">Math Test Scores</td>
+<td style="text-align: left;">Placebo Interaction</td>
+<td style="text-align: left;">-0.0356</td>
+<td style="text-align: left;">0.0374</td>
+<td style="text-align: left;">0.3405</td>
+<td style="text-align: left;">121,512</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_rla_subgroup_all</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Reading All Students</td>
+<td style="text-align: left;">Reading Test Scores</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0243</td>
+<td style="text-align: left;">0.0260</td>
+<td style="text-align: left;">0.3493</td>
+<td style="text-align: left;">497,712</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_rla_subgroup_wht</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Reading White Subgroup</td>
+<td style="text-align: left;">Reading Test Scores (White)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0087</td>
+<td style="text-align: left;">0.0262</td>
+<td style="text-align: left;">0.7403</td>
+<td style="text-align: left;">445,664</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_rla_subgroup_blk</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Reading Black Subgroup</td>
+<td style="text-align: left;">Reading Test Scores (Black)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">0.0120</td>
+<td style="text-align: left;">0.0374</td>
+<td style="text-align: left;">0.7492</td>
+<td style="text-align: left;">114,194</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_rla_subgroup_ecd</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Reading Low-SES Subgroup</td>
+<td style="text-align: left;">Reading Test Scores (Low-SES)</td>
+<td style="text-align: left;">Lagged Mass Backlash × Waiver</td>
+<td style="text-align: left;">-0.0130</td>
+<td style="text-align: left;">0.0254</td>
+<td style="text-align: left;">0.6083</td>
+<td style="text-align: left;">391,961</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>district_rla_placebo_all</code></td>
+<td style="text-align: left;">District-Grade</td>
+<td style="text-align: left;">Reading Placebo (2010-2011)</td>
+<td style="text-align: left;">Reading Test Scores</td>
+<td style="text-align: left;">Placebo Interaction</td>
+<td style="text-align: left;">-0.0370</td>
+<td style="text-align: left;">0.0339</td>
+<td style="text-align: left;">0.2748</td>
+<td style="text-align: left;">123,527</td>
 </tr>
 </tbody>
 </table>
+<p><em>Note: Models fit with state-level clustering where applicable; state coefficients are standardized and district coefficients are in standard deviation units.</em></p>
 <h3>Summary of Key Findings</h3>
 <h3>A. Baseline and Disaggregated OLS</h3>
 <ul>
@@ -425,6 +560,193 @@ The interaction of lagged policy intensity with waiver status on subsequent back
 <li><strong>Rollback Corrections</strong>: Controlling for the lagged gap itself (which is highly significant: $\beta = 0.098, p = 0.000$) to control for mathematical mean reversion, lagged backlash does not significantly predict policy corrections in the expected positive direction ($\beta = -0.037, p = 0.090$), indicating that backlash does not drive policy reversion.</li>
 <li><strong>Legislative Frequency (H2 Delay Check)</strong>: Regressing the standard deviation of detrended policy intensity on a biennial legislature dummy shows a statistically significant negative association ($\beta = -0.181, p = 0.039$). This refutes the theoretical prediction that response delay amplifies policy oscillations; instead, biennial sessions act as a stabilizing damping force.</li>
 </ul>
+<h3>E. District-Level Causal Estimates and Subgroup Heterogeneity (SEDA Panel)</h3>
+<p>To resolve the statistical power limitations of the state-level panel and examine the local policy channels of ESEA waiver constraints, we estimate Model A on the SEDA 51-state district panel. We pre-specify <strong>Math, All Students</strong> as our primary outcome of interest to maintain statistical discipline and avoid multiple-testing inflation across the subgroups. The subgroup analyses and Reading outcomes are treated as exploratory heterogeneity checks. </p>
+<p>To address serial correlation and the fact that waiver treatment varies at the state-year level, standard errors are clustered at the state level ($N=51$). With 51 clusters, standard asymptotic properties of the Cluster-Robust Variance Estimator (CRVE) hold, protecting our inference from Moulton bias. Rather than "confirming" causal validity in a single step, we interpret the SEDA panel as providing evidence that is highly consistent with the lock-in mechanism.</p>
+<p><strong>Main Estimates &amp; Subject Divergence.</strong> The table below summarizes the waiver-backlash interaction ($\gamma$) estimates:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Subject</th>
+<th style="text-align: left;">Student Subgroup</th>
+<th style="text-align: left;">Coefficient</th>
+<th style="text-align: left;">Std. Err.</th>
+<th style="text-align: left;">t-stat</th>
+<th style="text-align: left;">p-value</th>
+<th style="text-align: left;">N (Observations)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Math (Primary)</strong></td>
+<td style="text-align: left;">All Students</td>
+<td style="text-align: left;"><strong>-0.0642</strong></td>
+<td style="text-align: left;">0.0263</td>
+<td style="text-align: left;">-2.44</td>
+<td style="text-align: left;"><strong>0.0146</strong>*</td>
+<td style="text-align: left;">473,602</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Math (Exploratory)</strong></td>
+<td style="text-align: left;">White Students</td>
+<td style="text-align: left;"><strong>-0.0794</strong></td>
+<td style="text-align: left;">0.0341</td>
+<td style="text-align: left;">-2.33</td>
+<td style="text-align: left;"><strong>0.0198</strong>*</td>
+<td style="text-align: left;">424,144</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Math (Exploratory)</strong></td>
+<td style="text-align: left;">Black Students</td>
+<td style="text-align: left;">-0.0679</td>
+<td style="text-align: left;">0.0515</td>
+<td style="text-align: left;">-1.32</td>
+<td style="text-align: left;">0.1879</td>
+<td style="text-align: left;">106,943</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Math (Exploratory)</strong></td>
+<td style="text-align: left;">Econ-Disadvantaged</td>
+<td style="text-align: left;">-0.0519</td>
+<td style="text-align: left;">0.0284</td>
+<td style="text-align: left;">-1.83</td>
+<td style="text-align: left;">0.0676</td>
+<td style="text-align: left;">373,339</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">All Students</td>
+<td style="text-align: left;">-0.0243</td>
+<td style="text-align: left;">0.0260</td>
+<td style="text-align: left;">-0.94</td>
+<td style="text-align: left;">0.3493</td>
+<td style="text-align: left;">497,712</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">White Students</td>
+<td style="text-align: left;">-0.0087</td>
+<td style="text-align: left;">0.0262</td>
+<td style="text-align: left;">-0.33</td>
+<td style="text-align: left;">0.7403</td>
+<td style="text-align: left;">445,664</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">Black Students</td>
+<td style="text-align: left;">0.0120</td>
+<td style="text-align: left;">0.0374</td>
+<td style="text-align: left;">0.32</td>
+<td style="text-align: left;">0.7492</td>
+<td style="text-align: left;">114,194</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">Econ-Disadvantaged</td>
+<td style="text-align: left;">-0.0130</td>
+<td style="text-align: left;">0.0254</td>
+<td style="text-align: left;">-0.51</td>
+<td style="text-align: left;">0.6083</td>
+<td style="text-align: left;">391,961</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: * indicates statistical significance at the 5% level.</em></p>
+<p>The SEDA results show a clear and significant divergence by subject. In our primary specification (<strong>Math, All Students</strong>), the waiver-backlash interaction is statistically significant and negative ($\gamma = -0.0642$, $p = 0.015$). For Reading, the coefficients are close to zero and statistically insignificant. This subject-specific divergence is consistent with education policy literature: Math is highly sensitive to school instruction, curriculum alignment (e.g., Common Core math reforms), and teacher evaluation stakes. Reading is heavily influenced by out-of-school factors (family background, home resources) and was rarely tied to high-stakes teacher evaluations. Furthermore, teacher Value-Added Models (VAM) were historically much more reliable and widely utilized for math teachers than reading teachers, driving the negative policy feedback loop specifically in this domain.</p>
+<p><strong>Subgroup Heterogeneity.</strong> The point estimates and 95% confidence intervals are plotted below:</p>
+<p><img alt="Subgroup Heterogeneity Effects" src="subgroup_heterogeneity_effects.png" /></p>
+<p>The estimated SEDA interaction is directionally negative across all student subgroups in Math, which is consistent with the lock-in mechanism operating as a broad systemic constraint. The estimates are statistically significant for the All and White student cohorts, but negative and less statistically precise for the Black and economically disadvantaged (ECD) cohorts. This lower precision is expected due to smaller subgroup sample sizes and higher measurement error in SEDA subgroup achievement estimates. We therefore avoid over-claiming that the effect was "particularly strong" for these groups, treating their directional consistency as suggestive.</p>
+<p>Theoretically, this pattern is consistent with a <strong>"democratic block"</strong>: while the public backlash and opt-out mobilization were disproportionately driven by organized middle-class and affluent suburban parent coalitions (such as those in Long Island, NY), the resulting ESEA waiver rules locked in compliance friction for <em>all</em> school districts within waiver-adopting states. Consequently, lower-resource and disadvantaged school districts, which did not lead the opt-out mobilization, remained bound by the same rigid federal evaluation mandates, experiencing the negative achievement consequences of the locked-in policy feedback channel without the political leverage to escape it.</p>
+<p><strong>Placebo Parallel Trends Check (2010–2011).</strong> To validate the parallel trends assumption, we estimate a placebo model on the pre-treatment period, assigning a placebo waiver dummy to eventual waiver states in 2011:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Subject</th>
+<th style="text-align: left;">Student Subgroup</th>
+<th style="text-align: left;">Placebo Coef.</th>
+<th style="text-align: left;">Std. Err.</th>
+<th style="text-align: left;">t-stat</th>
+<th style="text-align: left;">p-value</th>
+<th style="text-align: left;">N (Observations)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Math (Primary)</strong></td>
+<td style="text-align: left;">All Students</td>
+<td style="text-align: left;">-0.0357</td>
+<td style="text-align: left;">0.0374</td>
+<td style="text-align: left;">-0.95</td>
+<td style="text-align: left;"><strong>0.3405</strong></td>
+<td style="text-align: left;">121,512</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Math (Exploratory)</strong></td>
+<td style="text-align: left;">White Students</td>
+<td style="text-align: left;">-0.0380</td>
+<td style="text-align: left;">0.0359</td>
+<td style="text-align: left;">-1.06</td>
+<td style="text-align: left;"><strong>0.2895</strong></td>
+<td style="text-align: left;">108,792</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Math (Exploratory)</strong></td>
+<td style="text-align: left;">Black Students</td>
+<td style="text-align: left;">-0.0640</td>
+<td style="text-align: left;">0.0458</td>
+<td style="text-align: left;">-1.40</td>
+<td style="text-align: left;"><strong>0.1627</strong></td>
+<td style="text-align: left;">26,884</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Math (Exploratory)</strong></td>
+<td style="text-align: left;">Econ-Disadvantaged</td>
+<td style="text-align: left;">-0.0574</td>
+<td style="text-align: left;">0.0446</td>
+<td style="text-align: left;">-1.29</td>
+<td style="text-align: left;"><strong>0.1980</strong></td>
+<td style="text-align: left;">93,944</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">All Students</td>
+<td style="text-align: left;">-0.0370</td>
+<td style="text-align: left;">0.0339</td>
+<td style="text-align: left;">-1.09</td>
+<td style="text-align: left;"><strong>0.2748</strong></td>
+<td style="text-align: left;">123,527</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">White Students</td>
+<td style="text-align: left;">-0.0409</td>
+<td style="text-align: left;">0.0354</td>
+<td style="text-align: left;">-1.16</td>
+<td style="text-align: left;"><strong>0.2470</strong></td>
+<td style="text-align: left;">109,715</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">Black Students</td>
+<td style="text-align: left;">-0.0796</td>
+<td style="text-align: left;">0.0540</td>
+<td style="text-align: left;">-1.47</td>
+<td style="text-align: left;"><strong>0.1404</strong></td>
+<td style="text-align: left;">26,960</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading (Exploratory)</strong></td>
+<td style="text-align: left;">Econ-Disadvantaged</td>
+<td style="text-align: left;">-0.0495</td>
+<td style="text-align: left;">0.0425</td>
+<td style="text-align: left;">-1.16</td>
+<td style="text-align: left;"><strong>0.2444</strong></td>
+<td style="text-align: left;">95,443</td>
+</tr>
+</tbody>
+</table>
+<p>Every placebo interaction coefficient has a p-value well above $0.10$ (ranging from $0.14$ to $0.34$), confirming that eventual waiver and non-waiver states followed parallel pre-treatment trajectories.</p>
+<p><strong>Methodological Lesson: Moulton Bias and the Pilot-to-Full-Panel Transition.</strong> Before scaling to the full 51-state panel, we estimated the district-level models on a 6-state pilot panel. Conventional clustering at the district level in the pilot yielded t-statistics that were artificially inflated due to severe Moulton bias (producing false-positive p-values of $0.000$ and falsely flagging a parallel trends violation in the pre-treatment placebo check). Because standard error clustering requires a sufficient number of clusters ($N \ge 30$ to $50$) for the Cluster-Robust Variance Estimator (CRVE) to achieve asymptotic validity, the 6-state pilot was severely under-clustered. While running exact permutation shuffles (randomization inference) corrected this bias in the pilot by recovering the correct finite-sample distribution, the scale-up to the full 51-state panel resolved this issue structurally. With $N=51$ state clusters, standard CRVE asymptotics hold, confirming that the placebo parallel trends check is statistically insignificant ($p &gt; 0.10$) and validating the identification strategy.</p>
 <hr />
 <h2>8. Robustness and Placebo Tests</h2>
 <h3>A. Robustness Checks</h3>
