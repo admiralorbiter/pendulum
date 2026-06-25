@@ -37,4 +37,8 @@ gdelt-scraper-*.json
 *.csv.gz
 *.parquet
 
-gdelt-scraper-500401-964e41ee2b07.json
+# Large SEDA CSV datasets
+data/processed/seda_district_panel_full.csv
+data/processed/seda_district_panel_pilot.csv
+
+gdelt-scraper-500401-964e41ee2b07.json

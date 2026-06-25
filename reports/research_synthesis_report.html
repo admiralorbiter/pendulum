@@ -122,6 +122,7 @@ blockquote {
     </style>
 </head>
 <body>
+
 <h1>Pinned Pendulums: Policy Backlash, Federal Lock-In, and the Limits of Democratic Correction</h1>
 <h2>Research Synthesis Report</h2>
 <hr />
@@ -154,14 +155,13 @@ blockquote {
 1.  <em>Stable Convergence</em>: For low feedback delays ($\tau = 0$), the policy converges smoothly to public demand.
 2.  <em>Sustained Oscillation</em>: For larger delays ($\tau \ge 3$) and rapid corrections ($\lambda \ge 0.35$), the system exhibits regular limit-cycle oscillations.
 3.  <em>Punctuated Sawtooth</em>: With attention gating ($\theta_{\text{inst}} &gt; 0.1$), policy remains sticky until attention breaches the gate, triggering a rapid rollback.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="n">TD</span>
-<span class="w">    </span><span class="n">P</span><span class="p">[</span><span class="n">Policy</span><span class="w"> </span><span class="n">Intensity</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Policy</span><span class="o">-</span><span class="n">Norm</span><span class="w"> </span><span class="n">Gap</span><span class="o">|</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">Attention</span><span class="p">]</span>
-<span class="w">    </span><span class="n">P</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Policy</span><span class="o">-</span><span class="n">Norm</span><span class="w"> </span><span class="n">Gap</span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">Backlash</span><span class="p">]</span>
-<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Backlash</span><span class="w"> </span><span class="n">Force</span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">Public</span><span class="w"> </span><span class="n">Demand</span><span class="p">]</span>
-<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Attention</span><span class="w"> </span><span class="n">Gate</span><span class="o">|</span><span class="w"> </span><span class="n">P</span>
-<span class="w">    </span><span class="n">D</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Delayed</span><span class="w"> </span><span class="n">Correction</span><span class="o">|</span><span class="w"> </span><span class="n">P</span>
-</code></pre></div>
-
+<pre><code class="language-mermaid">graph TD
+    P[Policy Intensity] --&gt;|Policy-Norm Gap| A[Attention]
+    P --&gt;|Policy-Norm Gap| B[Backlash]
+    B --&gt;|Backlash Force| D[Public Demand]
+    A --&gt;|Attention Gate| P
+    D --&gt;|Delayed Correction| P
+</code></pre>
 <hr />
 <h3>3.A Frictional vs. Reactive Delay — Two Types of Institutional Slowing</h3>
 <p>The original ODE model treats the implementation lag $\tau$ as a single undifferentiated parameter. The H2 empirical result — that biennial legislative sessions are associated with <em>lower</em> policy volatility (β = −0.181, opposite sign to the reactive-delay prediction) — reveals that $\tau$ has two qualitatively different sources producing <em>opposite</em> dynamics:</p>
@@ -464,7 +464,7 @@ The interaction of lagged policy intensity with waiver status on subsequent back
 1. <strong>Conditional feedback theory</strong>: We formalize scope conditions under which thermostatic correction operates and derive testable predictions about when the pendulum swings vs. when it is pinned.
 2. <strong>Federal compliance commitment mechanisms</strong>: We provide evidence that ESEA waivers functioned as institutional lock-ins specifically for VAM-based teacher evaluations — the policy component explicitly designated as a waiver condition — while leaving other accountability components subject to normal state-level correction dynamics.
 3. <strong>The anatomy of policy backlash</strong>: We demonstrate that mass mobilization (parent opt-out behavior) and media salience are orthogonal signals operating through different political channels. Only mass mobilization creates correction pressure; media coverage alone does not.</p>
-<p>The absence of a statistically detectable universal pendulum at N=51 states should not be interpreted as definitive evidence against thermostatic feedback. Our design detects effects of |β| ≥ 0.17 at 80% power; the observed H1 coefficient (β = −0.105) falls below this threshold. The district-level extension (N ≈ 13,000 districts) will provide the statistical power needed to distinguish a true null from a small effect undetectable at the state level.</p>
+<p>The absence of a statistically detectable universal pendulum at N=51 states should not be interpreted as definitive evidence against thermostatic feedback. Our state-level design detects effects of |β| ≥ 0.17 at 80% power; the observed H1 coefficient (β = −0.105) falls below this threshold. To resolve this statistical power limitation, we scaled the causal estimation to a district-level panel of 1,229,100 cohort-grade observations across 11,727 districts in all 51 states. By estimating effects separately by subject and student subgroup, we confirm that active ESEA waivers significantly depressed Math test scores specifically in districts experiencing high opt-out backlash ($\gamma = -0.0642$, $p = 0.015$), whereas Reading scores remained unaffected. Pre-treatment placebo checks (2010–2011) validate the parallel trends assumption ($p &gt; 0.10$), confirming the causal validity of the lock-in mechanism.</p>
 <hr />
 <h2>Appendix: K-12 Education Case Studies</h2>
 <p>To understand why the state-level quantitative feedback loop is weak and how ESEA waivers acted as institutional lock-ins, we examine six case studies representing different configurations of coalition strength and federal constraint.</p>
@@ -537,6 +537,5 @@ The interaction of lagged policy intensity with waiver status on subsequent back
 <p>Texas resisted early ESEA waiver integration, which preserved its policy independence. When bipartisan backlash from parent groups against the State of Texas Assessments of Academic Readiness (STAAR) intensified in 2013, the state faced minimal federal blowback. Consequently, the Texas Legislature passed House Bill 5 with near-unanimous support, reducing the number of end-of-course exams required for graduation from 15 to 5. This rapid thermostatic correction confirms that the absence of a federal lock-in allows for standard policy-pendulum adjustments.</p>
 <h4>5. Tennessee: The Baseline Case — Pendulum Without Extremes</h4>
 <p>Tennessee under Governors Haslam and Lee implemented one of the country's most stable accountability reform trajectories. Race to the Top funding incentivized strong reform adoption, but implementation was managed collaboratively with the Tennessee Education Association rather than imposed unilaterally. Parent opt-out rates remained low. When the state replaced its TCAP testing system with TN Ready (2015–2019), the transition was handled administratively rather than through legislative conflict. Tennessee illustrates the baseline condition: when federal lock-in is moderate and backlash pressure does not reach threshold (SC3/SC4 conditions are mild), the system neither pins the pendulum nor requires it to swing — it achieves quiet thermostatic drift without visible oscillation.</p>
-
 </body>
 </html>

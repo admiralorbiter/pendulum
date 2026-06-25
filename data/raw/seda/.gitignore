@@ -1,0 +1,2 @@
+# Ignore large SEDA CSV data files
+*.csv
