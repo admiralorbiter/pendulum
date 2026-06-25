@@ -73,3 +73,15 @@ def test_parameter_sweep():
     assert len(df_sweep) == 4
     assert "amplitude_std" in df_sweep.columns
     assert "regime" in df_sweep.columns
+
+def test_get_spectral_radius():
+    sim = PendulumSimulation(alpha=0.2, nu=0.05)
+    r = sim.get_spectral_radius(tau=0, lambda_val=0.1)
+    assert isinstance(r, float)
+    assert r > 0.0
+    
+    df_sweep = sim.analytical_stability_sweep(tau_range=[0, 1], lambda_range=[0.1, 0.2])
+    assert isinstance(df_sweep, pd.DataFrame)
+    assert len(df_sweep) == 4
+    assert "spectral_radius" in df_sweep.columns
+    assert "regime" in df_sweep.columns

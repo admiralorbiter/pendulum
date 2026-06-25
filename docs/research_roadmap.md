@@ -1,6 +1,6 @@
 # Research Roadmap
 
-*The Pendulum Always Swings — Phase-by-Phase Research Plan*
+*When the Pendulum Doesn't Swing — Phase-by-Phase Research Plan*
 
 This is the living operational document. It answers: **what to pull, in what order, what to look for, and what success looks like at each phase.**
 

@@ -1,6 +1,6 @@
 # Data Sources Guide
 
-*The Pendulum Always Swings — Research Project*
+*When the Pendulum Doesn't Swing — Research Project*
 
 This document catalogs every data source relevant to the project. For each source: what it is, how to access it, which variables it provides, and how it maps to the theory.
 

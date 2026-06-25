@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from typing import Dict, Any, List, Tuple, Optional
+from src.config import CONFIG
 
 class PendulumSimulation:
     """
@@ -12,20 +13,23 @@ class PendulumSimulation:
     
     def __init__(
         self,
-        alpha: float = 0.15,      # Demand sensitivity to policy-norm gap
-        beta: float = 0.05,       # Demand sensitivity to attention
-        gamma: float = 0.10,      # Demand sensitivity to backlash
+        alpha: float = CONFIG["alpha"],      # Demand sensitivity to policy-norm gap
+        beta: float = CONFIG["beta"],       # Demand sensitivity to attention
+        gamma: float = CONFIG["gamma"],      # Demand sensitivity to backlash
         lambda_: float = 0.20,    # Policy correction rate (response speed)
         tau: int = 2,             # Policy feedback delay lag
-        mu: float = 0.02,         # Policy sensitivity to attention
+        mu: float = CONFIG["mu"],         # Policy sensitivity to attention
         delta: float = 0.30,      # Attention decay rate
         phi: float = 0.25,        # Attention sensitivity to policy-norm gap
-        rho: float = 0.70,        # Backlash persistence/decay
-        sigma: float = 0.40,      # Backlash growth sensitivity to threshold breach
-        theta: float = 1.00,      # Backlash threshold (opinion distance)
-        theta_inst: float = 0.00, # Attention threshold for institutional response
-        nu: float = 0.08,         # Norm adaptation rate
-        noise_std: float = 0.00   # Standard deviation of Gaussian shocks
+        rho: float = CONFIG["rho"],        # Backlash persistence/decay
+        sigma: float = CONFIG["sigma"],      # Backlash growth sensitivity to threshold breach
+        theta: float = CONFIG["theta"],      # Backlash threshold (opinion distance)
+        theta_inst: float = CONFIG["theta_inst"], # Attention threshold for institutional response
+        nu: float = CONFIG["nu"],         # Norm adaptation rate
+        noise_std: float = 0.00,   # Standard deviation of Gaussian shocks
+        zeta: float = 0.0,         # Contagion feedback term in backlash
+        theta_std: float = 0.1,    # Threshold standard deviation for smooth threshold
+        smooth_threshold: bool = False # Use smooth normal CDF threshold
     ):
         self.alpha = alpha
         self.beta = beta
@@ -41,6 +45,9 @@ class PendulumSimulation:
         self.theta_inst = theta_inst
         self.nu = nu
         self.noise_std = noise_std
+        self.zeta = zeta
+        self.theta_std = theta_std
+        self.smooth_threshold = smooth_threshold
         
         # State history variables
         self.history: Optional[Dict[str, List[float]]] = None
@@ -107,8 +114,14 @@ class PendulumSimulation:
             # 3. Attention transition (A_t+1) - bound by [0, 5]
             A_next = np.clip((1 - self.delta) * A[-1] + self.phi * abs(P[-1] - N[-1]) + e_A, 0.0, 5.0)
             
-            # 4. Backlash transition (B_t+1) - bound by [0, 5]
-            B_next = np.clip(self.rho * B[-1] + self.sigma * max(0.0, abs(P[-1] - N[-1]) - self.theta) + e_B, 0.0, 5.0)
+            # 4. Backlash transition (B_t+1) - bound by [0, 1]
+            if self.smooth_threshold:
+                from scipy.stats import norm
+                threshold_force = norm.cdf(abs(P[-1] - N[-1]), loc=self.theta, scale=self.theta_std)
+            else:
+                threshold_force = max(0.0, abs(P[-1] - N[-1]) - self.theta)
+                
+            B_next = np.clip(self.rho * B[-1] + self.sigma * threshold_force + self.zeta * B[-1] * (1.0 - B[-1]) + e_B, 0.0, 1.0)
             
             # 5. Norm transition (N_t+1)
             N_next = np.clip(N[-1] + self.nu * (P[-1] - N[-1]) + e_N, -2.0, 2.0)
@@ -177,9 +190,10 @@ class PendulumSimulation:
         M[tau + 2, tau + 1] = self.nu
         M[tau + 2, tau + 2] = 1.0 - self.nu
         
-        # Compute eigenvalues
+        # Compute eigenvalues and deflate translation mode (1.0)
         eigenvalues = np.linalg.eigvals(M)
-        return float(np.max(np.abs(eigenvalues)))
+        sorted_abs_eig = sorted(np.abs(eigenvalues), reverse=True)
+        return float(sorted_abs_eig[1]) if len(sorted_abs_eig) > 1 else 0.0
 
     def analytical_stability_sweep(
         self,
@@ -256,6 +270,8 @@ class PendulumSimulation:
         Fit model parameters to observed (policy, backlash) time series.
         Uses scipy.optimize.minimize to minimize Mean Squared Error (MSE) 
         between simulated and observed trajectories.
+        Runs a nested grid search over the integer lag tau and continuous 
+        Nelder-Mead optimization for the remaining parameters.
         
         Args:
             observed: DataFrame containing columns 'P_observed' and 'B_observed' index-matched by time.
@@ -270,49 +286,56 @@ class PendulumSimulation:
         P_obs = observed['P_observed'].values
         B_obs = observed['B_observed'].values
         
-        # Define objective function
-        def objective(params):
-            alpha, lambda_val, tau, sigma, theta = params
-            tau_int = int(round(tau))
-            
-            sim = PendulumSimulation(
-                alpha=max(0.0, alpha),
-                lambda_=max(0.0, min(1.0, lambda_val)),
-                tau=max(0, min(10, tau_int)),
-                sigma=max(0.0, sigma),
-                theta=max(0.0, theta),
-                beta=self.beta, gamma=self.gamma, mu=self.mu, delta=self.delta,
-                phi=self.phi, rho=self.rho, theta_inst=self.theta_inst, nu=self.nu,
-                noise_std=0.0
-            )
-            hist = sim.run(steps=t_steps, initial_state={"D": P_obs[0], "P": P_obs[0], "A": 0.0, "B": B_obs[0], "N": P_obs[0]})
-            
-            P_sim = np.array(hist['P'])
-            B_sim = np.array(hist['B'])
-            
-            # Normalize signals to make them comparable
-            p_scale = np.std(P_obs) if np.std(P_obs) > 0 else 1.0
-            b_scale = np.std(B_obs) if np.std(B_obs) > 0 else 1.0
-            
-            val = np.mean(((P_sim - P_obs) / p_scale) ** 2) + np.mean(((B_sim - B_obs) / b_scale) ** 2)
-            return val
-            
-        # Initial guess: [alpha, lambda, tau, sigma, theta]
-        initial_guess = [self.alpha, self.lambda_, float(self.tau), self.sigma, self.theta]
-        bounds = [(0.01, 1.0), (0.01, 1.0), (0.0, 6.0), (0.01, 2.0), (0.01, 2.0)]
+        best_overall_loss = float('inf')
+        best_overall_params = {}
         
-        res = minimize(objective, initial_guess, bounds=bounds, method='Nelder-Mead')
-        
-        best_params = {
-            "alpha": float(res.x[0]),
-            "lambda_": float(res.x[1]),
-            "tau": int(round(res.x[2])),
-            "sigma": float(res.x[3]),
-            "theta": float(res.x[4])
-        }
+        # Grid search over integer lags tau
+        for tau_candidate in range(0, 7):
+            def objective(params):
+                alpha, lambda_val, sigma, theta = params
+                sim = PendulumSimulation(
+                    alpha=max(0.0, alpha),
+                    lambda_=max(0.0, min(1.0, lambda_val)),
+                    tau=tau_candidate,
+                    sigma=max(0.0, sigma),
+                    theta=max(0.0, theta),
+                    beta=self.beta, gamma=self.gamma, mu=self.mu, delta=self.delta,
+                    phi=self.phi, rho=self.rho, theta_inst=self.theta_inst, nu=self.nu,
+                    noise_std=0.0,
+                    zeta=self.zeta,
+                    theta_std=self.theta_std,
+                    smooth_threshold=self.smooth_threshold
+                )
+                hist = sim.run(steps=t_steps, initial_state={"D": P_obs[0], "P": P_obs[0], "A": 0.0, "B": B_obs[0], "N": P_obs[0]})
+                
+                P_sim = np.array(hist['P'])
+                B_sim = np.array(hist['B'])
+                
+                # Normalize signals to make them comparable
+                p_scale = np.std(P_obs) if np.std(P_obs) > 0 else 1.0
+                b_scale = np.std(B_obs) if np.std(B_obs) > 0 else 1.0
+                
+                val = np.mean(((P_sim - P_obs) / p_scale) ** 2) + np.mean(((B_sim - B_obs) / b_scale) ** 2)
+                return val
+                
+            # Initial guess: [alpha, lambda, sigma, theta]
+            initial_guess = [self.alpha, self.lambda_, self.sigma, self.theta]
+            bounds = [(0.01, 1.0), (0.01, 1.0), (0.01, 2.0), (0.01, 2.0)]
+            
+            res = minimize(objective, initial_guess, bounds=bounds, method='Nelder-Mead')
+            
+            if res.fun < best_overall_loss:
+                best_overall_loss = res.fun
+                best_overall_params = {
+                    "alpha": float(res.x[0]),
+                    "lambda_": float(res.x[1]),
+                    "tau": tau_candidate,
+                    "sigma": float(res.x[2]),
+                    "theta": float(res.x[3])
+                }
         
         return {
-            "parameters": best_params,
+            "parameters": best_overall_params,
             "loss_metric": loss,
             "loss_value": float(res.fun),
             "status": f"Calibration completed successfully: {res.message}"

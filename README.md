@@ -1,6 +1,6 @@
-# The Pendulum Always Swings
+# When the Pendulum Doesn't Swing
 
-> *When Feedback Is Delayed* — A theory and empirical study of policy-perception oscillation
+> *A State-Level Test of Policy Backlash Dynamics* — A formal theory and empirical panel study of policy-perception feedback loops
 
 [![Status](https://img.shields.io/badge/status-active%20research-blue)]()
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)]()
@@ -80,7 +80,7 @@ The norm $N_t$ drifts slowly toward prevailing policy — a ratchet effect that 
 
 The NCLB → Common Core → opt-out → ESSA sequence is the cleanest observable policy pendulum in recent domestic U.S. policy: a clear intensity shock, visible costs (testing burden, federal overreach), threshold-crossing backlash (opt-out normalization), and a documented institutional correction (ESSA flexibility).
 
-**State-year panel**: ~50 states × 14 years. Key question:
+**State-year panel**: 51 states × 15 years (2010–2024). Key question:
 
 > Did states with stronger pre-ESSA test-based accountability experience larger subsequent backlash and adopt less test-centric accountability designs after ESSA?
 

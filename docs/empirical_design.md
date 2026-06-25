@@ -1,6 +1,6 @@
 # Empirical Research Design
 
-*The Pendulum Always Swings — Technical Design Document*
+*When the Pendulum Doesn't Swing — Technical Design Document*
 
 ---
 
@@ -48,12 +48,12 @@ This sequence maps cleanly onto the pendulum mechanism: policy output expands �
 
 ### Unit of Analysis
 
-**State-year panel:** ~51 states × 14 years ≈ 714 observations at the primary level.
+**State-year panel:** 51 states × 15 years (2010–2024) = 765 observations at the primary level.
 
 **District-level extension (where data permit):** ~13,000 districts provide far more statistical power for nonlinear hypotheses (H4, H6). SEDA, CRDC, and district-level NAEP estimates support this extension.
 
 > [!IMPORTANT]
-> **Statistical tightness warning (flagged by Quantitative Methodologist):** N≈50 states × T≈14 years is tight for the number of hypotheses, especially the nonlinear interaction terms in H2, H4, and H6. Power calculations should be run before committing these as **confirmatory** hypotheses. They may need to be treated as **exploratory** at the state-year level and confirmatory only with district-level data.
+> **Statistical tightness warning (flagged by Quantitative Methodologist):** N=51 states × T=15 years is tight for the number of hypotheses, especially the nonlinear interaction terms in H2, H4, and H6. Power calculations should be run before committing these as **confirmatory** hypotheses. They may need to be treated as **exploratory** at the state-year level and confirmatory only with district-level data.
 
 ---
 
@@ -245,7 +245,7 @@ For Impulse-Response Functions (IRFs), we impose the recursive Cholesky ordering
 - Does Correction Granger-cause lower subsequent PolicyIntensity? ($p < 0.05$ → confirms full cycle)
 - Impulse-response function: does the system oscillate in response to a policy intensity shock, or converge monotonically?
 
-**Lag order selection:** AIC/BIC; baseline is VAR(1) to avoid parameter bloat in a T=14 panel.
+**Lag order selection:** AIC/BIC; baseline is VAR(1) to avoid parameter bloat in a T=15 panel.
 
 **Implementation:** statsmodels VARResultsWrapper in Python (estimating on pooled demeaned panel) or a panel VAR R-bridge (for the Abrigo-Love estimator).
 

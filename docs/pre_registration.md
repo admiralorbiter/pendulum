@@ -1,6 +1,6 @@
 # Pre-Registration Template (OSF/EGAP Format)
 
-This document serves as the pre-analysis registration template for *The Pendulum Always Swings* project, outlining hypotheses, design, variable operationalizations, and statistical models before empirical data files are formally opened for analysis.
+This document serves as the pre-analysis registration template for *When the Pendulum Doesn't Swing* project, outlining hypotheses, design, variable operationalizations, and statistical models before empirical data files are formally opened for analysis.
 
 ---
 
@@ -32,7 +32,7 @@ We pre-specify the following decision rules for rejecting our core hypotheses:
 
 *   **Study Window**: 2010–2024. 
     *   *Robustness epoch separations*: Primary analysis runs on 2010–2019 (pre-COVID); secondary analysis models 2020–2024 as a distinct epoch or includes pandemic-period interaction terms.
-*   **Unit of Analysis**: State-year panel ($N=51$ states, $T=14$ years).
+*   **Unit of Analysis**: State-year panel ($N=51$ states, $T=15$ years).
 *   **Policy Intensity ($P_{s,t}$)**: Standardized composite index of state accountability strength, standard test requirements, and teacher evaluation linkages.
 *   **Perceived Norm ($N_{s,t}$)**: Operationalized as a 5-year rolling moving average of past policy intensity, reflecting how public expectations adapt:
     \[

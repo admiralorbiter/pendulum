@@ -2,6 +2,7 @@ import mesa
 import networkx as nx
 import numpy as np
 from collections import deque
+from src.config import CONFIG
 
 class PolicyAgent(mesa.Agent):
     """
@@ -49,8 +50,8 @@ class PolicyAgent(mesa.Agent):
         local_policy = P - self.model.kappa * local_backlash
         
         policy_gap = local_policy - self.norm
-        f_policy = -self.model.alpha * policy_gap
-        f_attention = self.model.beta * self.attention
+        # Corrected: attention acts as a multiplicative amplifier of the policy-norm gap
+        f_policy_corrected = -(self.model.alpha + self.model.beta * self.attention) * policy_gap
         # Corrected signed backlash force
         f_backlash = -self.model.gamma * (1.0 if self.backlash_active else 0.0) * np.sign(policy_gap)
         
@@ -59,18 +60,19 @@ class PolicyAgent(mesa.Agent):
             eps_logit = 1e-5
             x_social_clipped = np.clip(x_social, eps_logit, 1 - eps_logit)
             y_social = np.log(x_social_clipped / (1 - x_social_clipped))
-            y_next = y_social + f_policy + f_attention + f_backlash
+            y_next = y_social + f_policy_corrected + f_backlash
             self.next_opinion = 1.0 / (1.0 + np.exp(-y_next))
         else:
             # Standard additive update with boundary clamping (matches mean-field ODE exactly)
-            self.next_opinion = np.clip(x_social + f_policy + f_attention + f_backlash, 0.0, 1.0)
+            self.next_opinion = np.clip(x_social + f_policy_corrected + f_backlash, 0.0, 1.0)
         
         # 4. Attention Contagion
         local_att_mean = np.mean([agent.attention for agent in neighbor_agents if agent != self]) \
             if len(neighbor_agents) > 1 else 0.0
-        self.next_attention = max(0.0, (1 - self.model.delta) * self.attention + 
-                                  self.model.phi * abs(policy_gap) + 
-                                  self.model.attention_diffusion * local_att_mean)
+        # Corrected: Attention is clipped to [0, 5]
+        self.next_attention = np.clip((1 - self.model.delta) * self.attention + 
+                                      self.model.phi * abs(policy_gap) + 
+                                      self.model.attention_diffusion * local_att_mean, 0.0, 5.0)
         
         # 5. Granovetter Cascade Backlash
         active_neighbors = [agent for agent in neighbor_agents if agent != self and agent.backlash_active]
@@ -89,7 +91,8 @@ class PolicyAgent(mesa.Agent):
         # 6. Perceived Norm Dual-Updating
         local_opinion_mean = np.mean([agent.opinion for agent in neighbor_agents])
         local_adjustment = 0.05 * (local_opinion_mean - self.norm) if self.model.use_logit else 0.0
-        self.next_norm = self.norm + self.model.nu * (P - self.norm) + local_adjustment
+        # Corrected: Norm is clipped to [0, 1]
+        self.next_norm = np.clip(self.norm + self.model.nu * (P - self.norm) + local_adjustment, 0.0, 1.0)
 
     def advance(self):
         # Synchronous state transition
@@ -106,9 +109,10 @@ class PendulumABM(mesa.Model):
     and H7 policy stabilizers.
     """
     def __init__(self, N=100, network_type='small_world', tolerance=0.2, tau=3, lambda_=0.3,
-                 alpha=0.15, beta=0.05, gamma=0.1, delta=0.3, phi=0.25, nu=0.02, 
-                 attention_diffusion=0.1, theta_inst=0.2, omega=2.0, kappa=0.0,
-                 theta_mean=1.0, theta_std=0.2, psi_min=0.1, psi_max=0.4, initial_policy=0.0,
+                 alpha=CONFIG["alpha"], beta=CONFIG["beta"], gamma=CONFIG["gamma"], delta=0.3, phi=0.25,
+                 nu=CONFIG["nu_abm"], mu=CONFIG["mu"], attention_diffusion=0.1,
+                 theta_inst=CONFIG["theta_inst_abm"], omega=CONFIG["omega"], kappa=CONFIG["kappa"],
+                 theta_mean=0.25, theta_std=0.05, psi_min=0.1, psi_max=0.4, initial_policy=0.0,
                  use_logit=True):
         super().__init__()
         self.num_agents = N
@@ -121,6 +125,7 @@ class PendulumABM(mesa.Model):
         self.delta = delta
         self.phi = phi
         self.nu = nu
+        self.mu = mu
         self.attention_diffusion = attention_diffusion
         self.theta_inst = theta_inst
         self.omega = omega
@@ -207,8 +212,8 @@ class PendulumABM(mesa.Model):
         
         # Update policy using lagged demand and current attention
         if A_t >= self.theta_inst:
-            # Salience scales policy correction speed, removing unsigned positive drift
-            self.policy += (self.lambda_ + 0.2 * A_t) * (lagged_demand - self.policy)
+            # Corrected: Salience scales policy correction speed using mu, and policy is clipped to [0, 1]
+            self.policy = np.clip(self.policy + (self.lambda_ + self.mu * A_t) * (lagged_demand - self.policy), 0.0, 1.0)
             
         # Append current demand to history for future steps
         D_w = self.calculate_weighted_demand()

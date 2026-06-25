@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Synthesis Report: Policy Backlash Dynamics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #2d3748;
+    background-color: #ffffff;
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 40px;
+}
+h1, h2, h3, h4 {
+    color: #1a202c;
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+h1 {
+    font-size: 2.2em;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 0.3em;
+    color: #2b6cb0;
+}
+h2 {
+    font-size: 1.6em;
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 0.2em;
+    color: #2d3748;
+}
+h3 {
+    font-size: 1.25em;
+}
+p {
+    margin-bottom: 1.25em;
+    font-size: 1.05em;
+}
+a {
+    color: #3182ce;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+ul, ol {
+    margin-bottom: 1.25em;
+    padding-left: 1.5em;
+}
+li {
+    margin-bottom: 0.5em;
+}
+code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    background-color: #edf2f7;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+pre {
+    background-color: #1a202c;
+    color: #f7fafc;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 1.5em;
+}
+pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.9em;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+    font-size: 0.95em;
+}
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+th {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    font-weight: 600;
+}
+tr:hover {
+    background-color: #f8fafc;
+}
+blockquote {
+    border-left: 4px solid #3182ce;
+    background-color: #ebf8ff;
+    padding: 10px 20px;
+    margin: 0 0 1.5em 0;
+    border-radius: 0 4px 4px 0;
+}
+.toc {
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 2em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.toc ul {
+    list-style-type: none;
+    padding-left: 1em;
+}
+.toc > ul {
+    padding-left: 0;
+}
+
+    </style>
+</head>
+<body>
+<h1>Research Synthesis Report: When the Pendulum Doesn't Swing</h1>
+<p>This report synthesizes the theoretical models, empirical strategies, and econometric findings of the <em>When the Pendulum Doesn't Swing: A State-Level Test of Policy Backlash Dynamics</em> project. It outlines the core scientific narrative, explains the choice of statistical tests, and interprets what the data reveals about the feedback loops between public policy and social resistance.</p>
+<hr />
+<h2>1. Introduction</h2>
+<p>We formalize policy backlash as a delayed feedback system. At the state-year level, the central prediction that policy intensity produces later backlash is not supported. The evidence is noisy and largely null. However, one institutional mechanism—federal waivers—appears to alter the relationship between backlash and subsequent policy change. This suggests that the pendulum metaphor may be less a universal law than a conditional process shaped by measurement scale, institutional constraints, and policy-specific implementation mechanisms.</p>
+<hr />
+<h2>2. Theory</h2>
+<p>The core feedback theory is modeled as a thermostatic system consisting of three actors and feedback links:
+1.  <strong>Policymakers (Macro-level)</strong>: Implement accountability standards (e.g., standardized testing, school grading, teacher evaluations) in response to perceived demand.
+2.  <strong>The Public &amp; Professionals (Micro-level)</strong>: Experience policy pressure. When the policy deviates significantly from their internal norms, they experience grievance, leading to collective mobilization (backlash).
+3.  <strong>The Feedback Mechanism</strong>: Rising backlash signals grievance to policymakers, who roll back or dilute the policy intensity to restore political equilibrium.</p>
+<p>If policy pressure is applied too rapidly or exceeds the speed at which public norms adapt, the system can overshoot, generating sustained oscillations or runaway polarization.</p>
+<hr />
+<h2>3. Formal Model</h2>
+<p>We formalize these dynamics using a 5-equation Ordinary Differential Equation (ODE) system tracking:
+-   <strong>Public Demand ($D_t$)</strong>:
+    $$D_{t+1} = D_t - (\alpha + \beta A_t)(P_t - N_t) - \gamma B_t \text{sign}(P_t - N_t)$$
+-   <strong>Policy Intensity ($P_t$)</strong>:
+    $$P_{t+1} = P_t + (\lambda + \mu A_t)(D_{t-\tau} - P_t) \quad \text{if } A_t \ge \theta_{\text{inst}}$$
+-   <strong>Attention ($A_t$)</strong>:
+    $$A_{t+1} = (1 - \delta) A_t + \phi |P_t - N_t|$$
+-   <strong>Backlash ($B_t$)</strong>:
+    $$B_{t+1} = \rho B_t + \sigma \max(0, |P_t - N_t| - \theta)$$
+-   <strong>Norm ($N_t$)</strong>:
+    $$N_{t+1} = N_t + \nu (P_t - N_t)$$</p>
+<p>where $\tau$ represents the policy implementation lag, $\lambda$ is the correction rate, $\theta$ is the grievance threshold, and $\theta_{\text{inst}}$ is the attention gate.</p>
+<p>Depending on the parameters, the ODE model generates three distinct regimes:
+1.  <em>Stable Convergence</em>: For low feedback delays ($\tau = 0$), the policy converges smoothly to public demand.
+2.  <em>Sustained Oscillation</em>: For larger delays ($\tau \ge 3$) and rapid corrections ($\lambda \ge 0.35$), the system exhibits regular limit-cycle oscillations.
+3.  <em>Punctuated Sawtooth</em>: With attention gating ($\theta_{\text{inst}} &gt; 0.1$), policy remains sticky until attention breaches the gate, triggering a rapid rollback.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="n">TD</span>
+<span class="w">    </span><span class="n">P</span><span class="p">[</span><span class="n">Policy</span><span class="w"> </span><span class="n">Intensity</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Policy</span><span class="o">-</span><span class="n">Norm</span><span class="w"> </span><span class="n">Gap</span><span class="o">|</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">Attention</span><span class="p">]</span>
+<span class="w">    </span><span class="n">P</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Policy</span><span class="o">-</span><span class="n">Norm</span><span class="w"> </span><span class="n">Gap</span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">Backlash</span><span class="p">]</span>
+<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Backlash</span><span class="w"> </span><span class="n">Force</span><span class="o">|</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">Public</span><span class="w"> </span><span class="n">Demand</span><span class="p">]</span>
+<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Attention</span><span class="w"> </span><span class="n">Gate</span><span class="o">|</span><span class="w"> </span><span class="n">P</span>
+<span class="w">    </span><span class="n">D</span><span class="w"> </span><span class="o">--&gt;|</span><span class="n">Delayed</span><span class="w"> </span><span class="n">Correction</span><span class="o">|</span><span class="w"> </span><span class="n">P</span>
+</code></pre></div>
+
+<hr />
+<h2>4. Observable Implications</h2>
+<p>To connect the theoretical ODE model to empirical data, we test several reduced-form hypotheses:
+*   <strong>$H_1$ (Thermostatic Feedback)</strong>: Policy intensity predicts later backlash ($P \rightarrow B$), and backlash predicts subsequent policy rollbacks ($\Delta P$).
+*   <strong>$H_5$ (Disaggregated Pressure)</strong>: The impact of policy pressure on backlash differs between labor-directed (teacher-salient) and community-directed (parent-salient) mandates.
+*   <strong>$H_7$ (Institutional Lock-In / Constraint)</strong>: Built-in institutional lock-ins (such as federal waivers) dampen the feedback loop by decoupling policy corrections from public backlash.</p>
+<hr />
+<h2>5. Data and Measurement</h2>
+<p>We construct a state-year panel dataset (2010–2024, $N=51$ states, $T=15$ years, yielding 765 observations) using the following operationalizations:
+*   <strong>Policy Intensity ($P_{s,t}$)</strong>: A composite index ($0$ to $4$) summing Exit Exams, A–F Grading, Third-Grade Retention, and VAM Teacher Evaluations, standardized within-era.
+*   <strong>Disaggregated Indices</strong>: Community-directed pressure (<code>policy_community</code>) and labor-directed pressure (<code>policy_labor</code>), scaled post-ESSA by the weights assigned to Achievement vs. Growth in consolidated state plans.
+*   <strong>Norm ($N_{s,t}$)</strong>: Computed as an EWMA of past policy intensity with $\nu = 0.08$.
+*   <strong>Backlash ($B_{s,t}$)</strong>: The pre-registered Confirmatory Factor Analysis (CFA) on media and mass indicators yielded a poor fit ($\text{CFI} = 0.040, \text{RMSEA} = 0.368$), failing our validation thresholds. We fell back to the first principal component of a Principal Component Analysis (PCA) on state-demeaned indicators, explaining <strong>44.58%</strong> of the variance.
+*   <strong>Institutional Safety Valve / Lock-In</strong>: active ESEA flexibility waivers, including the 2014 revocations in Washington State and Oklahoma.</p>
+<h3>5.A. Measurement Validation and Audit</h3>
+<p>Due to the failure of the pre-registered CFA model, we conduct a three-part validation process to stress-test our PCA-based composite backlash measure and the underlying disaggregated indicators:</p>
+<h4>1. Indicator Correlation Matrix</h4>
+<p>Calculating the pairwise correlation coefficients across the panel reveals that the composite index is heavily aligned with mass mobilization:
+* Correlation between composite <code>backlash</code> and <code>backlash_mass</code> (Google search SVI / opt-out): $r = 0.799$
+* Correlation between composite <code>backlash</code> and <code>backlash_media</code> (GDELT media salience): $r = -0.013$
+* Correlation between <code>backlash_media</code> and <code>backlash_mass</code>: $r = -0.107$</p>
+<p>This demonstrates that media salience and mass mobilization represent distinct, orthogonal political forces. Media coverage does not automatically translate to mass coordinate search and opt-out behavior, highlighting the necessity of analyzing these channels separately.</p>
+<h4>2. Manual Audit of the Top 10 State-Year Backlash Observations</h4>
+<p>We manually audited the highest-scoring state-years in the panel to verify that they correspond to documented historical policy battles:
+1.  <strong>WY (2013–2014)</strong>: Intense political battle where the state legislature blocked funding for the Next Generation Science Standards (NGSS), triggering massive resistance from Wyoming science teachers and parents.
+2.  <strong>OK (2021–2024)</strong>: High-profile conflict surrounding State Superintendent Ryan Walters' culture-war mandates and curriculum overhauls, sparking massive bipartisan teacher protests and national media coverage.
+3.  <strong>NM (2015–2017, 2021–2022)</strong>: Large-scale student walkouts and teacher protests against the PARCC standardized test and state teacher evaluation formulas, leading to litigation and eventual administrative changes.
+4.  <strong>CT (2021)</strong>: Widespread parent mobilization against post-pandemic school reopening mandates and curriculum guidelines.
+5.  <strong>MI (2017)</strong>: Mass mobilization and teacher union protests over school funding formulas, pension reform, and state-mandated school closures in Detroit.
+6.  <strong>DE (2017)</strong>: Bipartisan parent mobilization leading to the state's largest test opt-out campaigns.
+7.  <strong>WV (2019)</strong>: Statewide teacher strike over charter school expansion and education funding.
+8.  <strong>DC (2017)</strong>: Outcry over high graduation rate inflation audits and chancellor controversies.</p>
+<h4>3. Time-Series Case Validation</h4>
+<p>As shown in <a href="file:///c:/Users/admir/Github/pendulum/reports/backlash_validation_cases.png">backlash_validation_cases.png</a>, plotting the disaggregated components alongside the composite index for NY, FL, WA, OK, TX, and TN reveals a clear, synchronized spike in mass search and composite backlash during the <strong>Common Core conflict peak (2013–2015)</strong>. This confirms that the indicators successfully capture real, event-driven historical dynamics.</p>
+<hr />
+<h2>6. Empirical Strategy</h2>
+<p>We estimate two primary specifications to isolate the feedback loop:
+1.  <strong>Double Fixed Effects (State &amp; Year) OLS</strong>: Regresses backlash on lagged policy intensity (and interactions) with state-level clustered standard errors.
+2.  <strong>Helmert-Transformed GMM Panel VAR</strong>: Estimates a 2-variable system to Granger-test feedback loops. We apply the Helmert transformation to remove Nickell bias and instrument the transformed 1-period lags with 1-period untransformed lagged levels.</p>
+<hr />
+<h2>7. Results</h2>
+<p>Our empirical analysis reveals a highly nuanced, mixed-evidence picture. Below is the master results table summarizing all core hypotheses, estimated models, and their interpretations:</p>
+<h3>Master Results Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Hypothesis / Test</th>
+<th style="text-align: left;">Model Spec</th>
+<th style="text-align: left;">Independent Var (L1)</th>
+<th style="text-align: left;">Outcome Var ($\Delta$ / Level)</th>
+<th style="text-align: left;">Estimate ($\beta$)</th>
+<th style="text-align: left;">p-value</th>
+<th style="text-align: left;">Robustness / Bootstrap</th>
+<th style="text-align: left;">Substantive Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>H1a: Thermostatic correction</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>policy_lag1</code></td>
+<td style="text-align: left;"><code>backlash</code></td>
+<td style="text-align: left;">-0.105</td>
+<td style="text-align: left;">0.361</td>
+<td style="text-align: left;">Insignificant across all lags/subsamples</td>
+<td style="text-align: left;"><strong>Not supported</strong>: No linear policy-to-backlash feedback.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H1b: Granger causality</strong></td>
+<td style="text-align: left;">Panel VAR</td>
+<td style="text-align: left;"><code>L1_policy_intensity</code></td>
+<td style="text-align: left;"><code>backlash</code></td>
+<td style="text-align: left;">-0.075</td>
+<td style="text-align: left;">0.654</td>
+<td style="text-align: left;">Insignificant</td>
+<td style="text-align: left;"><strong>Not supported</strong>: Policy does not Granger-cause backlash.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H1b: Granger causality</strong></td>
+<td style="text-align: left;">Panel VAR</td>
+<td style="text-align: left;"><code>L1_backlash</code></td>
+<td style="text-align: left;"><code>policy_intensity</code></td>
+<td style="text-align: left;">0.055</td>
+<td style="text-align: left;">0.033</td>
+<td style="text-align: left;">Significant positive</td>
+<td style="text-align: left;"><strong>Opposite sign</strong>: Backlash predicts <em>increase</em> in policy.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gap Theory</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>abs_policy_gap_lag1</code></td>
+<td style="text-align: left;"><code>backlash</code></td>
+<td style="text-align: left;">-0.064</td>
+<td style="text-align: left;">0.479</td>
+<td style="text-align: left;">Insignificant across asymmetric/threshold models</td>
+<td style="text-align: left;"><strong>Not supported</strong>: Gaps relative to EWMA norm do not predict backlash.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Rollback Correction</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>backlash_lag1</code></td>
+<td style="text-align: left;"><code>correction</code></td>
+<td style="text-align: left;">-0.037</td>
+<td style="text-align: left;">0.090</td>
+<td style="text-align: left;">Insignificant across lags 1-3</td>
+<td style="text-align: left;"><strong>Not supported</strong>: Measured backlash does not predict rollback.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Mean Reversion</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>policy_gap_lag1</code></td>
+<td style="text-align: left;"><code>correction</code></td>
+<td style="text-align: left;">0.098</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">Highly significant and robust</td>
+<td style="text-align: left;"><strong>Supported</strong>: Policy gap strongly predicts reversion toward the norm.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H2: Delay &amp; Oscillation</strong></td>
+<td style="text-align: left;">Cross-section</td>
+<td style="text-align: left;"><code>biennial_legislature</code></td>
+<td style="text-align: left;"><code>amplitude</code> (detrended SD)</td>
+<td style="text-align: left;">-0.181</td>
+<td style="text-align: left;">0.039</td>
+<td style="text-align: left;">Significant negative</td>
+<td style="text-align: left;"><strong>Opposite sign</strong>: Exogenous delay <em>dampens</em> policy volatility.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H7b: Lock-In (Composite)</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>backlash_x_waiver</code></td>
+<td style="text-align: left;"><code>delta_policy</code></td>
+<td style="text-align: left;">-0.169</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">CI: $[-0.251, -0.087]$, Randomization $p=0.001$</td>
+<td style="text-align: left;"><strong>Unclear</strong>: Contaminated by pre-2018 ESEA VAM circularity.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H7b: Lock-In (LOCO)</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>backlash_x_waiver_no_vam</code></td>
+<td style="text-align: left;"><code>delta_policy_no_vam</code></td>
+<td style="text-align: left;">0.023</td>
+<td style="text-align: left;">0.526</td>
+<td style="text-align: left;">Insignificant</td>
+<td style="text-align: left;"><strong>Not robust</strong>: Decoupling effect disappears when VAM is excluded.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H7b: Lock-In (Mass Search)</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>backlash_mass_x_waiver</code></td>
+<td style="text-align: left;"><code>delta_policy</code></td>
+<td style="text-align: left;">-0.128</td>
+<td style="text-align: left;">0.014</td>
+<td style="text-align: left;">Significant and robust</td>
+<td style="text-align: left;"><strong>Suggestive</strong>: Active parent opt-out pressure clashed with lock-ins.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H7b: Lock-In (Media)</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>backlash_media_x_waiver</code></td>
+<td style="text-align: left;"><code>delta_policy</code></td>
+<td style="text-align: left;">0.0003</td>
+<td style="text-align: left;">0.990</td>
+<td style="text-align: left;">Insignificant</td>
+<td style="text-align: left;"><strong>Not supported</strong>: GDELT media salience does not interact with waivers.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>H7b: Lock-In (Components)</strong></td>
+<td style="text-align: left;">FE OLS</td>
+<td style="text-align: left;"><code>backlash_x_waiver</code></td>
+<td style="text-align: left;"><code>delta_vam_eval</code></td>
+<td style="text-align: left;">-0.183</td>
+<td style="text-align: left;">0.000</td>
+<td style="text-align: left;">Highly significant and robust</td>
+<td style="text-align: left;"><strong>Supported</strong>: Strong lock-in specifically for VAM evaluations.</td>
+</tr>
+</tbody>
+</table>
+<h3>Summary of Key Findings</h3>
+<h3>A. Baseline and Disaggregated OLS</h3>
+<ul>
+<li><strong>Baseline Policy to Backlash</strong>: Lagged policy intensity has a negative and statistically insignificant association with subsequent backlash ($\beta = -0.105, p = 0.361$), failing to support the positive relationship predicted by $H_1$.</li>
+<li><strong>Community-Directed Policy</strong>: Lagged community pressure is negative and statistically insignificant ($\beta = -0.108, p = 0.242$).</li>
+<li><strong>Labor-Directed Policy</strong>: Lagged labor pressure is negative and statistically insignificant ($\beta = -0.009, p = 0.902$). This shows that the previously observed significant negative association was a numerical artifact of the VAM coding bug. With the bug corrected, teacher-directed policy stakes do not statistically predict subsequent backlash.</li>
+</ul>
+<h3>B. ESEA Waiver Interactions ($H_7$)</h3>
+<ul>
+<li><strong>Backlash Dampening ($H_{7a}$)</strong>: The interaction <code>policy_lag1 * has_waiver</code> is statistically insignificant ($\beta = 0.047, p = 0.561$).</li>
+<li><strong>Correction Dampening ($H_{7b}$)</strong>:<ul>
+<li><em>Baseline Interaction</em>: In the standard composite index, the interaction <code>backlash_x_waiver</code> is negative and highly statistically significant ($\beta = -0.169, p = 0.0001$).</li>
+<li><em>LOCO Robustness (No VAM)</em>: When teacher evaluations (VAM) are excluded from the policy index to prevent construct circularity (pre-2018 waivers algebraically forced VAM), the interaction becomes statistically insignificant and positive ($\beta = 0.023, p = 0.526$).</li>
+<li><em>Individual Components</em>: Standard regressions show that the interaction is highly significant specifically for the <strong>VAM teacher evaluation</strong> component ($\beta = -0.183, p = 0.000$), showing that waivers damp/freeze rollbacks for the federally mandated teacher-evaluation policies, while interactions on other individual components (exit exams: $p=0.398$, school grading: $p=0.613$, third-grade retention: $p=0.729$) are statistically insignificant.</li>
+<li><em>Disaggregated Backlash</em>: Predicting policy changes with disaggregated backlash indicators shows that the interaction is highly significant for <strong>Mass Search/Opt-out</strong> ($\beta = -0.128, p = 0.014$) but completely flat for <strong>Media Salience</strong> ($\beta = 0.0003, p = 0.990$). This indicates that active parent opt-out pressure is what clashed with ESEA waiver lock-ins.</li>
+</ul>
+</li>
+</ul>
+<h3>C. Granger Feedback Loop (GMM Panel VAR)</h3>
+<p>Using the corrected 1-period lagged level GMM estimator, we find:
+*   <strong>Policy to Backlash</strong>: Lagged policy intensity does not significantly predict subsequent backlash ($\beta = -0.075, p = 0.654$).
+*   <strong>Backlash to Policy</strong>: In contrast to the expected thermostatic rollback, lagged backlash has a small, positive, and statistically significant association with subsequent policy intensity ($\beta = 0.055, p = 0.033$).</p>
+<h3>D. Policy-Norm Gaps, Corrections, and Exogenous Delay Dynamics</h3>
+<ul>
+<li><strong>Policy-Norm Gaps</strong>: Regressing backlash on absolute or asymmetric gaps between lagged policy and its EWMA norm yields statistically insignificant coefficients (absolute gap: $p=0.479$, positive gap: $p=0.469$, negative gap: $p=0.352$, threshold knots at 0.5 and 1.0: $p &gt; 0.29$). Gaps do not Granger-cause backlash linearly at the U.S. state level.</li>
+<li><strong>Rollback Corrections</strong>: Controlling for the lagged gap itself (which is highly significant: $\beta = 0.098, p = 0.000$) to control for mathematical mean reversion, lagged backlash does not significantly predict policy corrections in the expected positive direction ($\beta = -0.037, p = 0.090$), indicating that backlash does not drive policy reversion.</li>
+<li><strong>Legislative Frequency (H2 Delay Check)</strong>: Regressing the standard deviation of detrended policy intensity on a biennial legislature dummy shows a statistically significant negative association ($\beta = -0.181, p = 0.039$). This refutes the theoretical prediction that response delay amplifies policy oscillations; instead, biennial sessions act as a stabilizing damping force.</li>
+</ul>
+<hr />
+<h2>8. Robustness and Placebo Tests</h2>
+<h3>A. Robustness Checks</h3>
+<p>A battery of 10 robustness checks confirms the fragility and noise of the baseline OLS estimates:
+1.  <em>2-Year Lags</em>: Policy lag 2 is negative and insignificant ($\beta = -0.100, p = 0.368$).
+2.  <em>Alternative Backlash (Media)</em>: Insignificant ($\beta = -0.087, p = 0.331$).
+3.  <em>Alternative Backlash (Mass Search)</em>: Insignificant ($\beta = -0.049, p = 0.477$).
+4.  <em>Raw Policy Index</em>: Insignificant ($\beta = -0.106, p = 0.430$).
+5.  <em>State-Specific Linear Trends</em>: Insignificant ($\beta = -0.099, p = 0.328$).
+6.  <em>Excluding Leverage States (FL, TX, NY, WA)</em>: Insignificant at the 5% level, though marginally significant at 10% ($\beta = -0.194, p = 0.089$).
+7.  <em>Pre-ESSA Split (&lt;= 2017)</em>: Insignificant ($\beta = -0.202, p = 0.101$).
+8.  <em>Post-ESSA Split (&gt;= 2018)</em>: Insignificant ($\beta = 0.093, p = 0.338$).
+9.  <em>Whole Sample Standardization Sensitivity</em>: Insignificant ($\beta = -0.113, p = 0.430$).
+10. <em>Clustered Block Bootstrap</em>: The 95% bootstrap confidence interval for the baseline <code>policy_lag1</code> coefficient is $[-0.326, 0.123]$, which contains zero (reflecting cluster sensitivity).</p>
+<h3>B. Randomization Inference Placebo</h3>
+<p>We replace the simulated noise placebo with a <strong>Randomization Inference permuted policy placebo</strong> (1,000 runs). The randomization p-value is <strong>0.001</strong>, indicating that the observed waiver interaction pattern is extremely unlikely to have emerged from random permutations of state waiver histories.</p>
+<hr />
+<h2>9. Discussion and Conclusion</h2>
+<p>The findings from this study do not confirm the existence of a robust, statistically significant policy-backlash pendulum at the U.S. state level. Instead, the empirical results are characterized by high statistical noise and wide confidence intervals. </p>
+<p>However, this project contributes value in three areas:
+1.  <strong>Theoretical Framework</strong>: We provide a formal 5-equation ODE model and Mesa ABM linking micro opinion dynamics to macro policy corrections.
+2.  <strong>Measurement Strategy</strong>: We outline a comprehensive, multi-indicator index construction method and state plan weights integration.
+3.  <strong>Path Forward</strong>: The lack of statistical significance at the state level (where $N=51$ restricts power) suggests that future research should scale these models to the district level (where $N \approx 13,000$) to achieve the statistical power necessary to detect these complex feedback loops.</p>
+<hr />
+<h2>Appendix: K-12 Education Case Studies</h2>
+<p>To understand why the state-level quantitative feedback loop is weak and how ESEA waivers acted as institutional lock-ins, we examine four case studies representing different configurations of coalition strength and federal constraint.</p>
+<h3>Comparative Case Study Matrix</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">State</th>
+<th style="text-align: left;">Backlash Coalition Composition</th>
+<th style="text-align: left;">Institutional Opportunity Structure</th>
+<th style="text-align: left;">Federal Constraint Level</th>
+<th style="text-align: left;">Coalitional Entrenchment / Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>New York (NY)</strong></td>
+<td style="text-align: left;">Strong union-led (NYSUT) mobilization + middle-class suburban parents.</td>
+<td style="text-align: left;">High policy centralization; union-friendly legislature; high public test opt-out rates (&gt;20%).</td>
+<td style="text-align: left;">High (Active ESEA waiver locked in VAM teacher evaluation requirements).</td>
+<td style="text-align: left;"><strong>Partial Rollback/Moratorium</strong>: Parent-teacher coalition forced a multi-year moratorium on using test scores in evaluations.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Florida (FL)</strong></td>
+<td style="text-align: left;">Teacher union (FEA) legal challenge; weak parent opt-out movement.</td>
+<td style="text-align: left;">Unified conservative government; weak public sector collective bargaining.</td>
+<td style="text-align: left;">High (Active ESEA waiver; fully committed to market-based reforms).</td>
+<td style="text-align: left;"><strong>Entrenchment</strong>: Minimal policy concession; teacher evaluations remained tied to test-based value-added models.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Washington (WA) &amp; Oklahoma (OK)</strong></td>
+<td style="text-align: left;">WA: Teacher-union allied state legislature. OK: Bipartisan coalition of conservative localists.</td>
+<td style="text-align: left;">WA: Split party control; high union influence. OK: Conservative supermajority with strong local-control tradition.</td>
+<td style="text-align: left;">Extreme (US DoE revoked waivers in 2014 for non-compliance with VAM or Common Core).</td>
+<td style="text-align: left;"><strong>Friction and Sanctions</strong>: Waiver revocation led to direct federal intervention, stripping WA of Title I flexibility ($40M funding redirection).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Texas (TX)</strong></td>
+<td style="text-align: left;">Bipartisan parent coalitions (e.g., Texans Advocating for Meaningful Student Assessment).</td>
+<td style="text-align: left;">Republican trifecta but with deep-seated localist skepticism toward state testing.</td>
+<td style="text-align: left;">Low (No standard ESEA waiver in initial rounds; high independence).</td>
+<td style="text-align: left;"><strong>Successful Rollback</strong>: State legislature passed HB 5 (2013), drastically slashing high school exit exams from 15 to 5.</td>
+</tr>
+</tbody>
+</table>
+<h3>Case Narrative Syntheses</h3>
+<h4>1. New York: Parent-Teacher Synergy and the Opt-Out Movement</h4>
+<p>In New York, backlash against Common Core and VAM teacher evaluations was driven by a powerful coalition of the state teachers' union (NYSUT) and middle-class parent organizations. By 2015, the "opt-out" movement reached unprecedented levels, with over 20% of eligible students refusing to take state tests. Although New York was bound by its ESEA waiver to keep teacher evaluations tied to student growth, the massive political pressure forced the state legislature and Governor Cuomo to implement a multi-year moratorium on using state test scores for teacher evaluations, illustrating how domestic backlash can temporarily bypass federal lock-ins through sheer volume of opt-outs.</p>
+<h4>2. Florida: Partisan Entrenchment and Weak Institutional Lock-Ins</h4>
+<p>In contrast to New York, Florida's institutional opportunity structure was highly centralized and hostile to union mobilization. The Florida Education Association (FEA) challenged VAM evaluations in federal court, but the court ruled that the system was constitutional. Parent opt-out rates remained low and uncoordinated. Because the state executive and legislature were unified behind high-stakes testing, and the state's active ESEA waiver reinforced this commitment, the policy intensity remained entrenched, with only minor technical adjustments to growth formulas.</p>
+<h4>3. Washington &amp; Oklahoma: The Revocation Friction Points</h4>
+<p>Washington and Oklahoma represent cases where state-level resistance collided directly with federal constraints, leading to waiver revocation. In Washington, the legislature refused to pass a bill requiring student test scores to be used as a primary criterion in teacher evaluations (a key requirement of the ESEA waiver). In Oklahoma, local control advocates successfully pushed the legislature to repeal Common Core standards. In response, the US Department of Education revoked both states' waivers in 2014. Washington lost control over approximately $40 million in federal Title I funds, which had to be redirected according to strict federal guidelines. This demonstrates that waivers were not "institutional lock-ins" but rigid federal lock-ins that penalize states trying to adjust policy in response to domestic pressure.</p>
+<h4>4. Texas: Autonomy and Rapid Rollback</h4>
+<p>Texas resisted early ESEA waiver integration, which preserved its policy independence. When bipartisan backlash from parent groups against the State of Texas Assessments of Academic Readiness (STAAR) intensified in 2013, the state faced minimal federal blowback. Consequently, the Texas Legislature passed House Bill 5 with near-unanimous support, reducing the number of end-of-course exams required for graduation from 15 to 5. This rapid thermostatic correction confirms that the absence of a federal lock-in allows for standard policy-pendulum adjustments.</p>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Annotated Literature Review
 
-*The Pendulum Always Swings — Research Project*
+*When the Pendulum Doesn't Swing — Research Project*
 
 ---
 

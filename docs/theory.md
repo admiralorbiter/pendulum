@@ -1,4 +1,4 @@
-# Theory: The Pendulum Always Swings — When Feedback Is Delayed
+# Theory: When the Pendulum Doesn't Swing — A State-Level Test of Policy Backlash Dynamics
 
 *Policy-perception oscillation: a formal theory*
 
